@@ -22,8 +22,8 @@
 
     let ballX = 50;
     let ballY = 50;
-    let velocityX = 10;
-    let velocityY = 10;
+    let velocityX = 5;
+    let velocityY = 5;
 
     let player1Y = 100;
     let player2Y = 100;
@@ -56,21 +56,26 @@
     }
 
     function ballReset() {
+        velocityX = -velocityX;
+        velocityY = -velocityY;
         ballX = canvas.width / 2;
         ballX = canvas.height / 2;
     }
 
 
-
+    // Movement updating function
     function moveEverything() {
-        if(ballX + ballRadius > canvas.width) {
+        if(ballX + ballRadius > player2X) {
             velocityX = -velocityX;
-        } else if (ballX - ballRadius < 0) {
-            velocityX = -velocityX;
+        } else if (ballX - ballRadius < player1X + paddleWidth - 1) {
+            if(ballY > player1Y && ballY < player1Y + paddleHeight) {
+                velocityX = -velocityX;
+            } else ballReset();
         }
         if(ballY + ballRadius > canvas.height) {
             velocityY = -velocityY;
         } else if (ballY - ballRadius < 0) {
+            
             velocityY = -velocityY;
         }
         ballX += velocityX;
@@ -83,11 +88,13 @@
         colorRect(0,0,canvas.width,canvas.height,'black');
     }
 
+    // Function for drawing any rectangle given parameters
     function colorRect(leftX, topY, width, height, drawColor) {
         canvasContext.fillStyle = drawColor;
         canvasContext.fillRect(leftX,topY,width,height);
     }
 
+    // Function for drawing any circle given parameters
     function colorCircle(centerX, centerY, radius, drawColor) {
         canvasContext.fillStyle = drawColor;
         canvasContext.beginPath();
@@ -95,10 +102,11 @@
         canvasContext.fill();
     }
 
+    // Function for drawing the screen every frame
     function drawEverything() {
         drawCanvas();
         colorRect(player1X, player1Y, paddleWidth, paddleHeight, 'red');
-        colorRect(player2X, 100, paddleWidth, paddleHeight, 'green');
+        colorRect(player2X, player2Y, paddleWidth, paddleHeight, 'green');
 
         colorCircle(ballX, ballY, ballRadius, 'blue')
     }
