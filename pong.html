@@ -145,16 +145,22 @@
         canvasContext.fill();
     }
 
+    function drawNet() {
+        for(let i = 0; i < canvas.height; i += 40){
+            colorRect(canvas.width/2 - 1, i, 2, 20, 'white');
+        }
+    }
     // Function for drawing the screen every frame
     function drawEverything() {
         if(showingWinScreen) {
             canvasContext.fillStyle = 'white';
-            if(player1Score >= WIN_CONDITION) canvasContext.fillText("Player 1 won!", 300, 100);
-            else if(player2Score >= WIN_CONDITION) canvasContext.fillText("Player 2 won!", 300, 100);
+            if(player1Score >= WIN_CONDITION) canvasContext.fillText("Player 1 won!", 400, 300);
+            else if(player2Score >= WIN_CONDITION) canvasContext.fillText("Player 2 won!", 400, 300);
             canvasContext.fillText("click to continue", 300, 100);
             return
         }
         drawCanvas();
+        drawNet();
         colorRect(player1X, player1Y, paddleWidth, paddleHeight, 'red');
         colorRect(player2X, player2Y, paddleWidth, paddleHeight, 'green');
 
