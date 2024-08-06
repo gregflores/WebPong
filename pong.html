@@ -54,6 +54,7 @@
         const FPS = 60;
         setInterval(() => {moveEverything(),drawEverything();}, 1000/FPS);
 
+        canvas.addEventListener('mousedown', handleMouseClick);
         // Handle player movement with mouse
         canvas.addEventListener('mousemove',
             function(evt) {
@@ -63,12 +64,16 @@
         )
     }
 
-    function ballReset() {
-        if(player1Score >= WIN_CONDITION || player2Score >= WIN_CONDITION) {
-            velocityX = 0;
-            velocityY = 0;
+    function handleMouseClick(evt) {
+        if(showingWinScreen) {
             player1Score = 0;
             player2Score = 0;
+            showingWinScreen = false;
+        }
+    }
+
+    function ballReset() {
+        if(player1Score >= WIN_CONDITION || player2Score >= WIN_CONDITION) {
             showingWinScreen = true;
         }
         velocityX = -velocityX;
@@ -144,6 +149,8 @@
     function drawEverything() {
         if(showingWinScreen) {
             canvasContext.fillStyle = 'white';
+            if(player1Score >= WIN_CONDITION) canvasContext.fillText("Player 1 won!", 300, 100);
+            else if(player2Score >= WIN_CONDITION) canvasContext.fillText("Player 2 won!", 300, 100);
             canvasContext.fillText("click to continue", 300, 100);
             return
         }
