@@ -27,7 +27,10 @@
 
     let player1Y = 100;
     let player2Y = 100;
-    let player2Speed = 10;
+    let player2Speed = 1;
+
+    let player1Score = 0;
+    let player2Score = 0;
 
     function calculateMousePos(evt) {
         let rect = canvas.getBoundingClientRect();
@@ -66,7 +69,6 @@
 
     function enemyAi() {
         let verticalDistance = player2Y + (paddleHeight/2) - ballY;
-        console.log(verticalDistance/Math.abs(verticalDistance))
         player2Y += (Math.sign(verticalDistance) * -player2Speed);
     }
 
@@ -77,11 +79,17 @@
         if(ballX + ballRadius > player2X) {
             if(ballY > player2Y && ballY < player2Y + paddleHeight) {
                 velocityX = -velocityX;
-            } else ballReset();
+            } else {
+                ballReset();
+                player1Score++;
+            }
         } else if (ballX - ballRadius < player1X + paddleWidth - 1) {
             if(ballY > player1Y && ballY < player1Y + paddleHeight) {
                 velocityX = -velocityX;
-            } else ballReset();
+            } else {
+                ballReset();
+                player2Score++;
+            }
         }
         // Handle Y axis movement and collision
         if(ballY + ballRadius > canvas.height) {
@@ -120,6 +128,10 @@
         colorRect(player2X, player2Y, paddleWidth, paddleHeight, 'green');
 
         colorCircle(ballX, ballY, ballRadius, 'blue')
+
+        canvasContext.fillStyle = 'white';
+        canvasContext.fillText(player1Score,100,100);
+        canvasContext.fillText(player2Score,canvas.width - 100, 100);
     }
 </script>
 </html>
