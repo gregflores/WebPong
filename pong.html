@@ -27,6 +27,7 @@
 
     let player1Y = 100;
     let player2Y = 100;
+    let player2Speed = 10;
 
     function calculateMousePos(evt) {
         let rect = canvas.getBoundingClientRect();
@@ -47,6 +48,7 @@
         const FPS = 60;
         setInterval(() => {moveEverything(),drawEverything();}, 1000/FPS);
 
+        // Handle player movement with mouse
         canvas.addEventListener('mousemove',
             function(evt) {
                 let mousePos = calculateMousePos(evt);
@@ -62,26 +64,35 @@
         ballX = canvas.height / 2;
     }
 
+    function enemyAi() {
+        let verticalDistance = player2Y + (paddleHeight/2) - ballY;
+        console.log(verticalDistance/Math.abs(verticalDistance))
+        player2Y += (Math.sign(verticalDistance) * -player2Speed);
+    }
+
 
     // Movement updating function
     function moveEverything() {
+        // Handle X axis movement and collision
         if(ballX + ballRadius > player2X) {
-            velocityX = -velocityX;
+            if(ballY > player2Y && ballY < player2Y + paddleHeight) {
+                velocityX = -velocityX;
+            } else ballReset();
         } else if (ballX - ballRadius < player1X + paddleWidth - 1) {
             if(ballY > player1Y && ballY < player1Y + paddleHeight) {
                 velocityX = -velocityX;
             } else ballReset();
         }
+        // Handle Y axis movement and collision
         if(ballY + ballRadius > canvas.height) {
             velocityY = -velocityY;
         } else if (ballY - ballRadius < 0) {
             
             velocityY = -velocityY;
         }
+        enemyAi();
         ballX += velocityX;
         ballY += velocityY;
-        console.log(ballX);
-        console.log(ballY);
     }
 
     function drawCanvas() {
