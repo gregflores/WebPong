@@ -6,18 +6,35 @@
     <title>Document</title>
 </head>
 <body>
+    <h1>WEB PONG</h1>
     <canvas id="gameCanvas" width="800" height="600"></canvas>>
 </body>
 
 <script>
+    const ballSize = 40;
+    let ballX = 50;
+    let velocity = 10;
+
     window.onload = function() {
         console.log("hello world");
         canvas = document.getElementById('gameCanvas');
         canvasContext = canvas.getContext('2d');
-        drawEverything();
+        const FPS = 60
+        setInterval(() => {moveEverything(),drawEverything()}, 1000/FPS)
+    }
+
+    function moveEverything() {
+        if(ballX + ballSize > 800) {
+            velocity = -10;
+        } else if (ballX < 0) {
+            velocity = 10;
+        }
+        ballX += velocity;
+        console.log(ballX);
     }
 
     function drawEverything() {
+        
         canvasContext.fillStyle = 'black';
         canvasContext.fillRect(0,0,canvas.width,canvas.height);
         canvasContext.fillStyle = 'red';
@@ -25,7 +42,7 @@
         canvasContext.fillStyle = 'green';
         canvasContext.fillRect(120,350,100,25);
         canvasContext.fillStyle = 'white';
-        canvasContext.fillRect(canvas.width/2 - 20,canvas.height/2 - 20,40,40);
+        canvasContext.fillRect(ballX,canvas.height/2 - 20,40,40);
     }
 </script>
 </html>
